@@ -126,7 +126,6 @@ class ProcessData(threading.Thread):
         """
         从数据库中获得原始数据
         """
-        print("limit:%s"%limit)
         cols = self.mangodb_connect["VibrationData"][settings.mangodb_info["tb_name"]].find({}, sort=[('_id', pymongo.DESCENDING)],
                                                                       limit=limit)
         return list(cols)[::-1]
@@ -181,7 +180,7 @@ class ProcessData(threading.Thread):
         con = sqlite3.connect(r'D:\fanuc\debug\fanuc_iot.db')
         cur = con.cursor()
 
-        cur.execute("select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM from FANUC_IOT")
+        cur.execute("select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM from FANUC_IOT order by ID desc limit 1;")
         ret = cur.fetchone()
         feed = ret[1]
         speed = ret[2]
@@ -191,7 +190,7 @@ class ProcessData(threading.Thread):
             tool_num = "T0" + str(tool_num)
         else:
             tool_num = "T" + str(tool_num)
-        return {"Feed": 1000, "RSpeed": 8000, "tool_num":"T1", 'load':load}
+        return {"Feed": feed, "RSpeed": speed, "tool_num":tool_num, 'load':load}
 
     def set_machineinfo(self, origin_machineinfo):
         """
@@ -241,7 +240,8 @@ class ProcessData(threading.Thread):
         把振动数据缓存起来
 
         """
-        if not self.判断刀具是否转向():
+        #print(self.判断刀具是否转向())
+        if not False:
             self.vibData_cache.append(self.pre_data)
 
         self.raw_vibData_cache.extend(self.pre_data)
@@ -261,7 +261,6 @@ class ProcessData(threading.Thread):
         :return:
         """
         self.处理振动数据()
-        print("发送振动数据到云端%s"%self.processed_raw_vibData)
         self.put_vibdata_to_cloud(self.processed_raw_vibData)
         self.raw_vibData_cache = []
         
@@ -275,7 +274,6 @@ class ProcessData(threading.Thread):
         try:
             
             self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now_str, data)
-            print("发送%s数据到云端"%data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -342,7 +340,8 @@ class ProcessData(threading.Thread):
         model = self.user_settings[self.tool_num]["model"]
         alpha = self.user_settings[self.tool_num]["var1"]
         beta = self.user_settings[self.tool_num]["var2"]
-        return self.alarm(self.vibData_cache, alpha, beta)
+        print(type(alpha))
+        return self.alarm(self.vibData_cache, float(alpha), float(beta))
 
 
     def 计算健康度(self, data):
@@ -381,7 +380,7 @@ class ProcessData(threading.Thread):
         companyNo = "CMP20210119001"
         deviceNo = '0001'
         try:
-            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, "T02", self.now_str, data)
+            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, self.tool_num, self.now_str, data*100)
         except Exception as e:
             print(e)
             self.ready = False
@@ -405,17 +404,17 @@ class ProcessData(threading.Thread):
         while 1:
             self.setup()
             while self.ready:
-                try:
-                    self.prepare_vibrationData()
-                    self.prepare_machineInfo()
-                    self.处理健康度()
-                    self.发送振动数据到云端()
-                    self.发送负载数据到云端()
-                    self.show_info()
-                    time.sleep(0.01)
-                except Exception as e:
-                    print(e)
-                    self.ready = False
+                #try:
+                self.prepare_vibrationData()
+                self.prepare_machineInfo()
+                self.处理健康度()
+                self.发送振动数据到云端()
+                self.发送负载数据到云端()
+                self.show_info()
+                time.sleep(0.01)
+                #except Exception as e:
+                #    print(e)
+                #    self.ready = False
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)
