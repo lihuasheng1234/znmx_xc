@@ -5,6 +5,7 @@ from openpyxl import load_workbook
 
 monkey.patch_all()
 
+import sqlite3
 from functools import wraps
 import threading
 import time
@@ -172,7 +173,20 @@ class ProcessData(threading.Thread):
         获得机台状态信息
         :return:
         """
-        return {"Feed": 6000, "RSpeed": 8000, "tool_num":"T01", 'load':0.5}
+        con = sqlite3.connect(r'D:\fanuc\debug\fanuc_iot.db')
+        cur = con.cursor()
+
+        cur.execute("select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM from FANUC_IOT")
+        ret = cur.fetchone()
+        feed = ret[1]
+        speed = ret[2]
+        load = ret[0]
+        tool_num = ret[3]
+        if tool_num < 10:
+            tool_num = "T0" + str(tool_num)
+        else:
+            tool_num = "T" + str(tool_num)
+        return {"Feed": 1000, "RSpeed": 8000, "tool_num":"T1", 'load':load}
 
     def set_machineinfo(self, origin_machineinfo):
         """
@@ -314,9 +328,10 @@ class ProcessData(threading.Thread):
         self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
 
     def 运行对应算法计算健康度(self):
+        #print(self.user_settings[self.tool_num])
         model = self.user_settings[self.tool_num]["model"]
-        alpha = self.user_settings[self.tool_num]["val1"]
-        beta = self.user_settings[self.tool_num]["val2"]
+        alpha = self.user_settings[self.tool_num]["var1"]
+        beta = self.user_settings[self.tool_num]["var2"]
         return self.alarm(self.vibData_cache, alpha, beta)
 
 
@@ -396,7 +411,7 @@ if __name__ == '__main__':
     print("hello world")
 
     t = []
-    tool_num1 = [0]
+
     t.append(ProcessData())
     for t1 in t:
         t1.start()

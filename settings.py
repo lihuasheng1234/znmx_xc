@@ -19,7 +19,7 @@ mysql_info = {
 
 
 # 计算健康度时间间隔 毫秒
-TOOLHEALTH_COMPUTE_BLANKING_TIME = 5*1000
+TOOLHEALTH_COMPUTE_BLANKING_TIME = 60*1000
 
 # 负载上传时间 毫秒
 LOADDATA_UPLOAD_BLANKING_TIME = 1*1000
@@ -64,7 +64,7 @@ signalr_hub_info = {
 }
 
 # 读取用户设定文件配置
-SHEET_PATH = "sheets.xlsx"
+SHEET_PATH = "D:\znmx_xc\znmx_xc-master\sheets.xlsx"
 
 # 刀具健康度缓存数据接口
 TOOL_HP_CACHE_POST_URL = "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect"
