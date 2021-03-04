@@ -1,7 +1,8 @@
+import csv
 import json
 
+import requests
 from gevent import monkey
-from openpyxl import load_workbook
 
 monkey.patch_all()
 
@@ -42,6 +43,7 @@ class ProcessData(threading.Thread):
         self.load = 0
         self.tool_hp = 0
 
+        self.s = requests.Session()
         self.companyNo = "CMP20210119001"
         self.deviceNo = "0001"
     @property
@@ -144,6 +146,9 @@ class ProcessData(threading.Thread):
     def prepare_machineInfo(self):
         origin_machineinfo = self.get_origin_machineinfo()
         self.set_machineinfo(origin_machineinfo)
+        if self.tool_num not in self.user_settings.keys():
+            print("用户还未设定当前刀具信息")
+            raise Exception
         self.make_load_cache()
 
     def make_load_cache(self):
@@ -163,7 +168,7 @@ class ProcessData(threading.Thread):
         """
         data = ",".join([str(i) for i in data])
         try:
-            self.hub.server.invoke("broadcastDJJK_Working", self.companyNo, self.deviceNo, self.now.strftime("%Y-%m-%d %H:%M:%S"), data)
+            self.hub.server.invoke("broadcastDJJK_Working", self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -199,24 +204,23 @@ class ProcessData(threading.Thread):
         self.tool_num = origin_machineinfo["tool_num"]
         self.load = origin_machineinfo["load"]
 
-
     def read_user_settings(self):
         """
         通过本地表格文件读取用户设定
         :return:
         """
-        wb = load_workbook(filename=settings.SHEET_PATH)
-        ws = wb[wb.sheetnames[0]]
+        csvFile = open(settings.SHEET_PATH, "r", encoding="utf-8")
+        reader = csv.reader(csvFile)
         user_settings = {}
         # 迭代所有的行
-        for row in ws.rows:
-            if "T" in row[0].value:
-                tool_num = row[0].value
-                s = row[1].value
-                f = row[2].value
-                model = row[3].value
-                val1 = row[4].value
-                val2 = row[5].value
+        for row in reader:
+            if "T" in row[0]:
+                tool_num = row[0]
+                s = row[1]
+                f = row[2]
+                model = row[3]
+                val1 = row[4]
+                val2 = row[5]
                 user_settings[tool_num] = {
                     "feed": f,
                     "rspeed": s,
@@ -270,7 +274,7 @@ class ProcessData(threading.Thread):
         data = ",".join([str(i) for i in data])
         try:
             
-            self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now.strftime("%Y-%m-%d %H:%M:%S"), data)
+            self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now_str, data)
             print("发送%s数据到云端"%data)
         except Exception as e:
             print(e)
@@ -295,9 +299,16 @@ class ProcessData(threading.Thread):
         self.发送健康度到云端()
         if flag_notch or flag_wear:
             self.健康度报警()
+        self.发送健康度到API()
         self.clean_vibdata_cache()
-        pass
-    
+
+    def 发送健康度到API(self):
+        data = settings.TOOL_HP_CACHE_POST_PARRM
+        data["collect_data"] = self.tool_hp
+        data["start_date"] = self.now_str
+        data["tool_position"] = self.tool_num
+        resp = self.s.post(settings.TOOL_HP_CACHE_POST_URL, data=data)
+
     def 健康度报警(self):
 
 
@@ -328,7 +339,6 @@ class ProcessData(threading.Thread):
         self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
 
     def 运行对应算法计算健康度(self):
-        #print(self.user_settings[self.tool_num])
         model = self.user_settings[self.tool_num]["model"]
         alpha = self.user_settings[self.tool_num]["var1"]
         beta = self.user_settings[self.tool_num]["var2"]
@@ -371,7 +381,7 @@ class ProcessData(threading.Thread):
         companyNo = "CMP20210119001"
         deviceNo = '0001'
         try:
-            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, "T02", self.now.strftime("%Y-%m-%d %H:%M:%S"), data)
+            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, "T02", self.now_str, data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -395,13 +405,17 @@ class ProcessData(threading.Thread):
         while 1:
             self.setup()
             while self.ready:
-                self.prepare_vibrationData()
-                self.prepare_machineInfo()
-                self.处理健康度()
-                self.发送振动数据到云端()
-                self.发送负载数据到云端()
-                self.show_info()
-                time.sleep(0.1)
+                try:
+                    self.prepare_vibrationData()
+                    self.prepare_machineInfo()
+                    self.处理健康度()
+                    self.发送振动数据到云端()
+                    self.发送负载数据到云端()
+                    self.show_info()
+                    time.sleep(0.01)
+                except Exception as e:
+                    print(e)
+                    self.ready = False
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)

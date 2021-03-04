@@ -1,7 +1,7 @@
 ﻿import pymysql
 
 # 时间字符串格式
-DATETIME_PATTERN = "%Y-%m-%d-%H-%M-%S"
+DATETIME_PATTERN = "%Y-%m-%d %H:%M:%S"
 
 # 负载小于到少判断为主轴未转动
 MIN_VALUE = 0
@@ -64,7 +64,7 @@ signalr_hub_info = {
 }
 
 # 读取用户设定文件配置
-SHEET_PATH = "D:\znmx_xc\znmx_xc-master\sheets.xlsx"
+SHEET_PATH = "sheets.csv"
 
 # 刀具健康度缓存数据接口
 TOOL_HP_CACHE_POST_URL = "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect"
