@@ -1,5 +1,7 @@
 import csv
+import ctypes
 import json
+import os
 
 import requests
 from gevent import monkey
@@ -38,7 +40,7 @@ class ProcessData(threading.Thread):
         self.pre_data = None
         self.user_settings = {}
         self.feed = 0
-        self.rspeed = 0
+        self.speed = 0
         self.tool_num = 0
         self.load = 0
         self.tool_hp = 0
@@ -85,6 +87,8 @@ class ProcessData(threading.Thread):
             self.get_signalr_hub()
             self.set_machineinfo_from_file()
             self.ready = True
+            os.add_dll_directory(settings.DLL_PATH);
+            self.dll = ctypes.cdll.LoadLibrary(settings.DLL_NAME);
         except Exception as e:
             print(e)
             self.ready = False
@@ -177,10 +181,10 @@ class ProcessData(threading.Thread):
         获得机台状态信息
         :return:
         """
-        con = sqlite3.connect(r'D:\fanuc\debug\fanuc_iot.db')
+        con = sqlite3.connect(settings.MACHINEINFO_DB_PATH)
         cur = con.cursor()
 
-        cur.execute("select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM from FANUC_IOT order by ID desc limit 1;")
+        cur.execute(settings.SQL)
         ret = cur.fetchone()
         feed = ret[1]
         speed = ret[2]
@@ -190,7 +194,7 @@ class ProcessData(threading.Thread):
             tool_num = "T0" + str(tool_num)
         else:
             tool_num = "T" + str(tool_num)
-        return {"Feed": feed, "RSpeed": speed, "tool_num":tool_num, 'load':load}
+        return {"feed": feed, "speed": speed, "tool_num":tool_num, 'load':load}
 
     def set_machineinfo(self, origin_machineinfo):
         """
@@ -198,14 +202,15 @@ class ProcessData(threading.Thread):
         :param origin_machineinfo:
         :return:
         """
-        self.feed = origin_machineinfo["Feed"]
-        self.rspeed = origin_machineinfo["RSpeed"]
+        self.feed = origin_machineinfo["feed"]
+        self.speed = origin_machineinfo["speed"]
         self.tool_num = origin_machineinfo["tool_num"]
         self.load = origin_machineinfo["load"]
 
     def read_user_settings(self):
         """
-        通过本地表格文件读取用户设定
+        通过本地表格文件读取用户设定,
+        读取出来的数据均为字符串
         :return:
         """
         csvFile = open(settings.SHEET_PATH, "r", encoding="utf-8")
@@ -222,7 +227,7 @@ class ProcessData(threading.Thread):
                 val2 = row[5]
                 user_settings[tool_num] = {
                     "feed": f,
-                    "rspeed": s,
+                    "speed": s,
                     "model": model,
                     "var1": val1,
                     "var2": val2,
@@ -240,17 +245,19 @@ class ProcessData(threading.Thread):
         把振动数据缓存起来
 
         """
-        #print(self.判断刀具是否转向())
+        print(self.判断刀具是否转向())
         if not False:
             self.vibData_cache.append(self.pre_data)
 
         self.raw_vibData_cache.extend(self.pre_data)
 
     def 判断刀具是否转向(self):
-
-        if self.tool_num in self.user_settings and  (self.user_settings[self.tool_num]["feed"] != self.feed or self.user_settings[self.tool_num]["rspeed"] != self.rspeed):
+        now_s = self.speed
+        now_f = self.feed
+        set_s = self.user_settings[self.tool_num]["speed"]
+        set_f = self.user_settings[self.tool_num]["feed"]
+        if self.tool_num in self.user_settings and  (self.user_settings[self.tool_num]["feed"] != self.feed or self.user_settings[self.tool_num]["speed"] != self.speed):
             return True
-        pass
 
     @clothes(settings.RAWVIBDATA_UPLOAD_BLANKING_TIME)
     def 发送振动数据到云端(self):
@@ -297,6 +304,7 @@ class ProcessData(threading.Thread):
         self.发送健康度到云端()
         if flag_notch or flag_wear:
             self.健康度报警()
+
         self.发送健康度到API()
         self.clean_vibdata_cache()
 
@@ -308,34 +316,28 @@ class ProcessData(threading.Thread):
         resp = self.s.post(settings.TOOL_HP_CACHE_POST_URL, data=data)
 
     def 健康度报警(self):
+        self.进行UI报警()
+        try:
+            self.进行机台报警()
+        except Exception as e:
+            print(e)
 
 
-        print("健康度报警")
-
-    def 进行报警(self):
-
+    def 进行UI报警(self):
+        print("ui报警")
         json_data = [
             {
                 "machine_num": "1",
                 "data": [
-                    "T01",
-                    "T02",
-                    "T03",
-                ]
-
-            },
-            {
-                "machine_num": "2",
-                "data": [
-                    "T01",
-                    "T02",
-                    "T03",
+                    self.tool_num,
                 ]
 
             },
         ]
         self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
-
+    def 进行机台报警(self):
+        print("机台报警")
+        self.dll.setAlarm("10.143.60.119", 1);
     def 运行对应算法计算健康度(self):
         model = self.user_settings[self.tool_num]["model"]
         alpha = self.user_settings[self.tool_num]["var1"]
@@ -352,6 +354,7 @@ class ProcessData(threading.Thread):
     输出：健康度H、崩缺报警标志flag_notch、磨损报警标志flag_wear
     '''
     def alarm(self, raw_data, alpha=1, beta=5):
+        print(raw_data)
         flag_wear = 0
         flag_notch = 0
         data = []
@@ -368,7 +371,7 @@ class ProcessData(threading.Thread):
 
         # 磨损报警
         H = 1 / (1 + log(rms, 10 ** beta))
-        if H < 0.8:
+        if H < 0.2:
             flag_wear = 1
 
         return H, flag_notch, flag_wear
@@ -388,12 +391,16 @@ class ProcessData(threading.Thread):
     def clean_vibdata_cache(self):
         self.vibData_cache = []
 
-    @clothes(1000)
+    @clothes(10000)
     def show_info(self):
         """
         显示当前算法运行状况
         """
-        print("当前时间:{0},上次计算健康度时间时间:{1},当前机台->加工刀具:{2},转速:{3},进给:{4},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}".format(self.now_str, self.last_transform_time, self.tool_num,self.rspeed, self.feed, self.load, self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)))
+        set_f = self.user_settings[self.tool_num]["feed"]
+        set_s = self.user_settings[self.tool_num]["speed"]
+
+        print("当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}"
+              .format(set_s, set_f, self.tool_num,self.speed, self.feed, self.load, self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)))
 
 
 
@@ -404,17 +411,17 @@ class ProcessData(threading.Thread):
         while 1:
             self.setup()
             while self.ready:
-                #try:
-                self.prepare_vibrationData()
-                self.prepare_machineInfo()
-                self.处理健康度()
-                self.发送振动数据到云端()
-                self.发送负载数据到云端()
-                self.show_info()
-                time.sleep(0.01)
-                #except Exception as e:
-                #    print(e)
-                #    self.ready = False
+                try:
+                    self.prepare_vibrationData()
+                    self.prepare_machineInfo()
+                    self.处理健康度()
+                    self.发送振动数据到云端()
+                    self.发送负载数据到云端()
+                    self.show_info()
+                    time.sleep(0.01)
+                except Exception as e:
+                    print(e)
+                    self.ready = False
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)
