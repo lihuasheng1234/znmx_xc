@@ -122,7 +122,6 @@ class ProcessData(threading.Thread):
         每个一秒钟从数据库中获取一次振动数据并处理成相应格式
         """
         origin_data = self.get_origin_vibrationData()
-        #print(origin_data)
         self.process_vibrationData(origin_data)
         self.make_vibDate_cache()
 
@@ -132,6 +131,7 @@ class ProcessData(threading.Thread):
         """
         cols = self.mangodb_connect["VibrationData"][settings.mangodb_info["tb_name"]].find({}, sort=[('_id', pymongo.DESCENDING)],
                                                                       limit=limit)
+
         return list(cols)[::-1]
 
     def process_vibrationData(self, db_data):
@@ -184,7 +184,7 @@ class ProcessData(threading.Thread):
         con = sqlite3.connect(settings.MACHINEINFO_DB_PATH)
         cur = con.cursor()
 
-        cur.execute(settings.SQL)
+        cur.execute(settings.SQLITE_SQL)
         ret = cur.fetchone()
         feed = ret[1]
         speed = ret[2]
@@ -226,11 +226,11 @@ class ProcessData(threading.Thread):
                 val1 = row[4]
                 val2 = row[5]
                 user_settings[tool_num] = {
-                    "feed": f,
-                    "speed": s,
+                    "feed": int(f),
+                    "speed": int(s),
                     "model": model,
-                    "var1": val1,
-                    "var2": val2,
+                    "var1": float(val1),
+                    "var2": float(val2),
                 }
         return user_settings
 
@@ -245,8 +245,7 @@ class ProcessData(threading.Thread):
         把振动数据缓存起来
 
         """
-        print(self.判断刀具是否转向())
-        if not False:
+        if not self.判断刀具是否转向():
             self.vibData_cache.append(self.pre_data)
 
         self.raw_vibData_cache.extend(self.pre_data)
@@ -256,8 +255,9 @@ class ProcessData(threading.Thread):
         now_f = self.feed
         set_s = self.user_settings[self.tool_num]["speed"]
         set_f = self.user_settings[self.tool_num]["feed"]
-        if self.tool_num in self.user_settings and  (self.user_settings[self.tool_num]["feed"] != self.feed or self.user_settings[self.tool_num]["speed"] != self.speed):
+        if now_f != set_f or now_s != set_s:
             return True
+
 
     @clothes(settings.RAWVIBDATA_UPLOAD_BLANKING_TIME)
     def 发送振动数据到云端(self):
@@ -337,17 +337,19 @@ class ProcessData(threading.Thread):
         self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
     def 进行机台报警(self):
         print("机台报警")
-        self.dll.setAlarm("10.143.60.119", 1);
+        #self.dll.setAlarm("10.143.60.119", 1);
     def 运行对应算法计算健康度(self):
         model = self.user_settings[self.tool_num]["model"]
         alpha = self.user_settings[self.tool_num]["var1"]
         beta = self.user_settings[self.tool_num]["var2"]
-        print(type(alpha))
-        return self.alarm(self.vibData_cache, float(alpha), float(beta))
+        try:
+            ret = self.alarm(self.vibData_cache, float(alpha), float(beta))
+        except Exception as e:
+            print(e)
+            ret = 0, False, False
+        return ret
 
 
-    def 计算健康度(self, data):
-        return 1
 
     '''
     输入：数据raw_data、崩缺调整系数alpha、磨损调整系数beta
@@ -360,8 +362,9 @@ class ProcessData(threading.Thread):
         data = []
         for i in range(len(raw_data)):
             data += raw_data[i]
-
         data = np.array(data)
+        print(data)
+        print(np.sum(data ** 2))
         rms = sqrt(np.sum(data ** 2) / len(data))
 
         # 崩缺报警
@@ -391,7 +394,7 @@ class ProcessData(threading.Thread):
     def clean_vibdata_cache(self):
         self.vibData_cache = []
 
-    @clothes(10000)
+    @clothes(500)
     def show_info(self):
         """
         显示当前算法运行状况
@@ -411,17 +414,16 @@ class ProcessData(threading.Thread):
         while 1:
             self.setup()
             while self.ready:
-                try:
-                    self.prepare_vibrationData()
-                    self.prepare_machineInfo()
-                    self.处理健康度()
-                    self.发送振动数据到云端()
-                    self.发送负载数据到云端()
-                    self.show_info()
-                    time.sleep(0.01)
-                except Exception as e:
-                    print(e)
-                    self.ready = False
+                # try:
+                self.prepare_machineInfo()
+                self.prepare_vibrationData()
+
+                self.处理健康度()
+                self.发送振动数据到云端()
+                self.发送负载数据到云端()
+                self.show_info()
+                # except Exception as e:
+                #     print(e)
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)

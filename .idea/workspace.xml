@@ -2,13 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0450c0ee-99d6-4592-95d9-a01ffc62cad7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/测试是否转向.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/znmx_project-master.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/znmx_project-master.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_pre.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_pre.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/processFiles_0223.py" beforeDir="false" afterPath="$PROJECT_DIR$/processFiles_0223.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sheets.csv" beforeDir="false" afterPath="$PROJECT_DIR$/sheets.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sqlite_helpter.py" beforeDir="false" afterPath="$PROJECT_DIR$/sqlite_helpter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start.bat" beforeDir="false" afterPath="$PROJECT_DIR$/start.bat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/调用动态链接库.py" beforeDir="false" afterPath="$PROJECT_DIR$/调用动态链接库.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -52,29 +55,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.processFiles_0223">
-    <configuration name="读取表格文件" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="znmx_project-master" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/读取表格文件.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.调用动态链接库">
     <configuration name="调用动态链接库" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="znmx_project-master" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -89,6 +70,50 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/调用动态链接库.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="data_pre" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="znmx_project-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_pre.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mongodb_helper" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="znmx_project-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/mongodb_helper.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -119,7 +144,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test_api" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="sqlite_helpter" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="znmx_project-master" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -132,7 +157,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_api.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/sqlite_helpter.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -143,10 +168,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.processFiles_0223" />
-        <item itemvalue="Python.读取表格文件" />
-        <item itemvalue="Python.test_api" />
         <item itemvalue="Python.调用动态链接库" />
+        <item itemvalue="Python.processFiles_0223" />
+        <item itemvalue="Python.data_pre" />
+        <item itemvalue="Python.sqlite_helpter" />
+        <item itemvalue="Python.mongodb_helper" />
       </list>
     </recent_temporary>
   </component>
@@ -161,7 +187,7 @@
       <option name="presentableId" value="Default" />
       <updated>1614758270855</updated>
       <workItem from="1614758282066" duration="6529000" />
-      <workItem from="1614837419753" duration="8581000" />
+      <workItem from="1614837419753" duration="18352000" />
     </task>
     <task id="LOCAL-00001" summary="0304下午修改版">
       <created>1614841361595</created>
@@ -177,7 +203,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614846964451</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="0305下午修改版1411">
+      <created>1614924677234</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1614924677234</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,7 +230,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0304下午修改版" />
     <MESSAGE value="0304下午修改版16:35" />
-    <option name="LAST_COMMIT_MESSAGE" value="0304下午修改版16:35" />
+    <MESSAGE value="0305下午修改版1411" />
+    <option name="LAST_COMMIT_MESSAGE" value="0305下午修改版1411" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -211,9 +245,12 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/znmx_xc$.coverage" NAME="读取表格文件 Coverage Results" MODIFIED="1614840521784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/znmx_xc$processFiles_0223.coverage" NAME="processFiles_0223 Coverage Results" MODIFIED="1614841050162" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$.coverage" NAME="调用动态链接库 Coverage Results" MODIFIED="1614995479055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$processFiles_0223.coverage" NAME="processFiles_0223 Coverage Results" MODIFIED="1614995335906" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$sqlite_helpter.coverage" NAME="sqlite_helpter Coverage Results" MODIFIED="1614990767914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_project_master$test_api.coverage" NAME="test_api Coverage Results" MODIFIED="1614763268173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$mongodb_helper.coverage" NAME="mongodb_helper Coverage Results" MODIFIED="1614990651359" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$data_pre.coverage" NAME="data_pre Coverage Results" MODIFIED="1614994735857" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_project_master$.coverage" NAME="读取表格文件 Coverage Results" MODIFIED="1614762073447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_xc$test_api.coverage" NAME="test_api Coverage Results" MODIFIED="1614839204056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

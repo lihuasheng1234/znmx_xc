@@ -56,7 +56,7 @@ signalr_hub_info = {
 }
 
 # 读取用户设定文件配置
-SHEET_PATH = r"D:\znmx_xc\test01\znmx_xc-master\sheets.csv"
+SHEET_PATH = r"sheets.csv"
 
 # 刀具健康度缓存数据接口
 TOOL_HP_CACHE_POST_URL = "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect" if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"
@@ -71,7 +71,7 @@ TOOL_HP_CACHE_POST_PARRM = {
 MACHINE1_IP = "10.143.60.119"
 
 
-MACHINEINFO_DB_PATH = r'D:\fanuc\debug\fanuc_iot.db'
+MACHINEINFO_DB_PATH = r'C:\Users\57852\Desktop\fanuc_iot.db'
 SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM from FANUC_IOT order by ID desc limit 1;"
 
 DLL_PATH = r'D:\znmx_xc\znmx_xc-master\Debug'
