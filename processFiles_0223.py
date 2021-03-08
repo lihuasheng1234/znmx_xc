@@ -423,8 +423,8 @@ class ProcessData(threading.Thread):
     输入：数据raw_data、崩缺调整系数alpha、磨损调整系数beta
     输出：健康度H、崩缺报警标志flag_notch、磨损报警标志flag_wear
     '''
-    def alarm(self, raw_data, alpha=0.5, beta=10):
-        #print(raw_data)
+
+    def alarm(raw_data, alpha=1, beta=5):
         flag_wear = 0
         flag_notch = 0
         data = []
@@ -432,16 +432,15 @@ class ProcessData(threading.Thread):
             data += raw_data[i]
 
         data = np.array(data)
-        rms = sqrt(np.sum(data ** 2) / len(data))
+        rms = sqrt(np.sum(np.int64((data * alpha) ** 2)) / len(data))
 
         # 崩缺报警
-        H2 = 100*alpha / (100*alpha + rms)
-        if H2 < 0.2:
+        if rms > 200:
             flag_notch = 1
 
         # 磨损报警
         H = 1 / (1 + log(rms, 10 ** beta))
-        if H < 0.2:
+        if H < 0.8:
             flag_wear = 1
 
         return H, flag_notch, flag_wear

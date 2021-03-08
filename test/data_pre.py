@@ -13,11 +13,10 @@ def alarm(raw_data, alpha=1, beta=5):
         data += raw_data[i]
 
     data = np.array(data)
-    rms = sqrt(np.sum(data ** 2) / len(data))
+    rms = sqrt(np.sum(np.int64((data*alpha) ** 2)) / len(data))
 
     # 崩缺报警
-    H2 = rms / (alpha + rms)
-    if H2 < 0.2:
+    if rms > 200:
         flag_notch = 1
 
     # 磨损报警
