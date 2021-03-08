@@ -1,4 +1,5 @@
 ﻿import pymysql
+import os
 
 # 时间字符串格式
 DATETIME_PATTERN = "%Y-%m-%d %H:%M:%S"
@@ -17,7 +18,7 @@ mysql_info = {
     "cursorclass" : pymysql.cursors.DictCursor
 }
 
-IS_LOCAL = False
+IS_LOCAL = True
 
 # 计算健康度时间间隔 毫秒
 TOOLHEALTH_COMPUTE_BLANKING_TIME = 5*1000
@@ -40,15 +41,24 @@ VIBDATA_DB_GET_BLANKING_TIME = 100
 # 每个间隔内从数据库中获取的数据条数
 VIBDATA_COUNT = VIBDATA_DB_GET_BLANKING_TIME//VIBDATA_DB_TIME
 
+# 刀具健康度mysql
+hp_mysql_info = {
+    "host" : "192.168.1.33",  # mysql服务端ip
+    "port" : 3306,  # mysql端口
+    "user" : "root",  # mysql 账号
+    "password" : "root",
+    "db" : "znmx",
+    "charset" : "utf8",
+    "cursorclass" : pymysql.cursors.DictCursor
+}
 
 #mangodb settings
 mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "VibrationData",
-    "tb_name" : "Sensor03",
+    "tb_name" : "Sensor04",
     "connect_timeoutMS" : "10000",
 }
-
 hub_url = "http://202.104.118.59:8070/signalr/" if not IS_LOCAL else "http://localhost:8070/signalr/"
 signalr_hub_info = {
     "url": hub_url,
@@ -56,23 +66,25 @@ signalr_hub_info = {
 }
 
 # 读取用户设定文件配置
-SHEET_PATH = r"sheets.csv"
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+SHEET_PATH = os.path.join(BASE_PATH, "sheets.csv")
+
 
 # 刀具健康度缓存数据接口
-TOOL_HP_CACHE_POST_URL = "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect" if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"
+TOOL_HP_CACHE_POST_URL = "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect" if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"  
 TOOL_HP_CACHE_POST_PARRM = {
         "company_no": "CMP20210119001",
         "device_no": "0001",
         "tool_position": "",
         "collect_data": "",
-        "collect_date": ""
+        "collect_date": "2021-02-24 14:13:00"
     }
 
 MACHINE1_IP = "10.143.60.119"
+MACHINE2_IP = "111.111.1.1"
 
-
-MACHINEINFO_DB_PATH = r'C:\Users\57852\Desktop\fanuc_iot.db'
-SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM from FANUC_IOT order by ID desc limit 1;"
+MACHINEINFO_DB_PATH = r'D:\fanuc\debug\fanuc_iot.db'
+SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM, ACT_FEED, ACT_SPEED from FANUC_IOT order by ID desc limit 1;"
 
 DLL_PATH = r'D:\znmx_xc\znmx_xc-master\Debug'
 DLL_NAME = r'D:\znmx_xc\znmx_xc-master\Debug\API.dll'
