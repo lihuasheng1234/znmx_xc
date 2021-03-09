@@ -82,9 +82,10 @@ class ProcessData(threading.Thread):
         print("正在准备中。。。")
         try:
             self.get_mangodb_connect()
-            # self.get_mysql_connect()
-            self.get_signalr_hub()
             self.set_machineinfo_from_file()
+            if not settings.LEARNNING_MODEL:
+                # self.get_mysql_connect()
+                self.get_signalr_hub()
             self.ready = True
         except Exception as e:
             print(e)
@@ -209,6 +210,7 @@ class ProcessData(threading.Thread):
         self.act_feed = origin_machineinfo["act_feed"]
         self.set_speed = origin_machineinfo["set_speed"]
         self.act_speed = origin_machineinfo["act_speed"]
+        self.tool_num_pre = self.tool_num
         self.tool_num = origin_machineinfo["tool_num"]
         self.load = origin_machineinfo["load"]
 
@@ -232,8 +234,8 @@ class ProcessData(threading.Thread):
                 val1 = row[4]
                 val2 = row[5]
                 user_settings[tool_num] = {
-                    "feed": int(f),
-                    "speed": int(s),
+                    "feed": float(f),
+                    "speed": float(s),
                     "model": model,
                     "var1": float(val1),
                     "var2": float(val2),
@@ -262,7 +264,7 @@ class ProcessData(threading.Thread):
             return True
         return False
     def 判断机台转速(self):
-        if self.set_speed - 100 < self.act_speed and self.set_speed < self.set_feed + 100:
+        if self.set_speed - 100 < self.act_speed and self.act_speed < self.set_speed + 100:
             return True
         return False
     def 机台正在加工(self):
@@ -309,15 +311,17 @@ class ProcessData(threading.Thread):
         通过算法把缓存的振动数据处理成刀具健康度然后发送到指定端口
         :return:
         """
-        H, flag_notch, flag_wear = self.运行对应算法计算健康度()
+
+        H, flag_wear = self.运行对应算法计算健康度()
+        print(H, flag_wear)
         self.tool_hp_pre = self.tool_hp
         self.tool_hp = H
 
         self.发送健康度到云端()
-        self.刀具报警判断()
+        self.刀具报警判断(flag_wear)
         self.发送健康度到API()
         self.clean_vibdata_cache()
-    def 刀具报警判断(self):
+    def 刀具报警判断(self, flag_wear):
         """
         根据刀具健康度与前一个计算的健康度差值进行报警处理
         :return:
@@ -329,28 +333,21 @@ class ProcessData(threading.Thread):
         alpha = self.user_settings[self.tool_num]["var1"]
         beta = self.user_settings[self.tool_num]["var2"]
         flag = 0
-        if beta < hp_abs_val < alpha:
-            flag = 1
+        if flag_wear:
             print("磨损报警")
-        elif alpha <= hp_abs_val < 0.5:
+            flag = 1
+        print(alpha)
+        if alpha <= hp_abs_val < alpha + 0.2:
             print("崩缺报警")
             flag = 2
-        elif 0.5 <= hp_abs_val:
+        elif alpha + 0.2 <= hp_abs_val:
             print("断刀报警")
             flag = 3
         if self.load > 100:
             self.进行机台报警()
         if flag:
             self.进行机台报警()
-            self.进行UI报警()
-
-        pass
-    def 健康度报警(self):
-        self.进行UI报警()
-        try:
-            self.进行机台报警()
-        except Exception as e:
-            print(e)
+            self.进行UI报警(type=flag)
 
     def 发送健康度到API(self):
         data = settings.TOOL_HP_CACHE_POST_PARRM
@@ -359,7 +356,7 @@ class ProcessData(threading.Thread):
         data["tool_position"] = self.tool_num
         resp = self.s.post(settings.TOOL_HP_CACHE_POST_URL, data=data)
         
-    def 进行UI报警(self):
+    def 进行UI报警(self, type):
         print("ui报警")
         json_data = [
             {
@@ -382,40 +379,15 @@ class ProcessData(threading.Thread):
         #print(dir(lib))
         lib.setAlarm.restype = ctypes.c_char_p
         ret = lib.setAlarm(settings.MACHINE1_IP,len(settings.MACHINE1_IP),802, 3);
-        
-    def 进行报警(self):
 
-        json_data = [
-            {
-                "machine_num": "1",
-                "data": [
-                    "T01",
-                    "T02",
-                    "T03",
-                ]
-
-            },
-            {
-                "machine_num": "2",
-                "data": [
-                    "T01",
-                    "T02",
-                    "T03",
-                ]
-
-            },
-        ]
-        self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
 
     def 运行对应算法计算健康度(self):
         model = self.user_settings[self.tool_num]["model"]
         alpha = self.user_settings[self.tool_num]["var1"]
         beta = self.user_settings[self.tool_num]["var2"]
-        try:
-            ret = self.alarm(self.vibData_cache, float(alpha), float(beta))
-        except Exception as e:
-            print(e)
-            ret = 0, False, False
+
+        ret = self.alarm(self.vibData_cache, float(beta))
+
         return ret
 
 
@@ -424,26 +396,21 @@ class ProcessData(threading.Thread):
     输出：健康度H、崩缺报警标志flag_notch、磨损报警标志flag_wear
     '''
 
-    def alarm(raw_data, alpha=1, beta=5):
+    def alarm(self, raw_data, beta=0.75):
         flag_wear = 0
-        flag_notch = 0
         data = []
         for i in range(len(raw_data)):
             data += raw_data[i]
 
         data = np.array(data)
-        rms = sqrt(np.sum(np.int64((data * alpha) ** 2)) / len(data))
-
-        # 崩缺报警
-        if rms > 200:
-            flag_notch = 1
+        rms = sqrt(np.sum(np.int64((data) ** 2)) / len(data))
 
         # 磨损报警
-        H = 1 / (1 + log(rms, 10 ** beta))
-        if H < 0.8:
+        H = 1 / (1 + log(rms, 10 ** 4)) + 0.2
+        if H < beta:
             flag_wear = 1
 
-        return H, flag_notch, flag_wear
+        return H, flag_wear
     def 发送健康度到云端(self):
         self.put_hpdata_to_cloud(self.tool_hp)
         print("发送到云端:健康度->%s,刀具->%s"%(self.tool_hp, self.tool_num))
@@ -459,6 +426,13 @@ class ProcessData(threading.Thread):
 
     def clean_vibdata_cache(self):
         self.vibData_cache = []
+    @property
+    def 机台换刀(self):
+        return True if self.tool_num_pre and self.tool_num != self.tool_num_pre else False
+
+    def 换刀判断(self):
+        if self.机台换刀:
+            self.dic[self.处理健康度] -= datetime.timedelta(milliseconds=settings.TOOLHEALTH_COMPUTE_BLANKING_TIME)
 
     @clothes(500)
     def show_info(self):
@@ -466,30 +440,62 @@ class ProcessData(threading.Thread):
         显示当前算法运行状况
         """
 
-        print("当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}, 机台是否转向"
+        print("当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}, 机台是否正在加工"
               .format(self.set_speed, self.set_feed, self.tool_num,self.set_speed, self.set_feed, self.load, self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)), self.机台正在加工())
-
-
+    @clothes(settings.LEARNNING_MODEL_BLANKING_TIME, flag=True)
+    def 学习模式(self):
+        """
+        把震动数据存储下来
+        :return:
+        """
+        self.保存振动数据到本地()
+        self.clean_vibdata_cache()
+        self.raw_vibData_cache = []
+        self.load_cache = []
+    def 保存振动数据到本地(self):
+        file_name = self.now.strftime(settings.DATETIME_PATTERN1) + ".txt"
+        data_dir_name = 'data'
+        data_dir_path = os.path.join(settings.BASE_PATH, data_dir_name, self.tool_num)
+        os.makedirs(data_dir_path, exist_ok=True)
+        file_path = os.path.join(data_dir_path, file_name)
+        data = []
+        for i in self.vibData_cache:
+            data.extend(i)
+        with open(file_path, "w") as f:
+            f.write(json.dumps(data))
 
     def run(self) -> None:
         """
         每1秒获取一次数据 每次10条 间隔100毫秒
         """
+
         while 1:
             self.setup()
             while self.ready:
-                try:
+                if settings.LEARNNING_MODEL:
                     self.prepare_machineInfo()
                     self.prepare_vibrationData()
-                    if self.机台正在加工() and self.vibData_cache:
-                        self.处理健康度()
-                    self.发送振动数据到云端()
-                    self.发送负载数据到云端()
                     self.show_info()
+                    if True:
+                        if self.机台换刀:
+                            self.dic[self.学习模式] -= datetime.timedelta(
+                                milliseconds=settings.LEARNNING_MODEL_BLANKING_TIME)
+                        self.学习模式()
 
-                except Exception as e:
-                    print(e)
-                    self.ready = False
+                else:
+                    try:
+                        self.prepare_machineInfo()
+                        self.prepare_vibrationData()
+                        if self.机台正在加工():
+                            self.换刀判断()
+                            self.处理健康度()
+                        self.发送振动数据到云端()
+                        self.发送负载数据到云端()
+                        self.show_info()
+
+                    except Exception as e:
+                        print(e)
+                        self.ready = False
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)

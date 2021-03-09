@@ -2,9 +2,32 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0450c0ee-99d6-4592-95d9-a01ffc62cad7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/test/创建文件.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/测试时间.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/znmx_project-master.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/znmx_project-master.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/API.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/API.exp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/API.ilk" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/API.lib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/API.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/Fwlib64.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/Fwlib64.lib" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/fwlib0DN64.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/fwlib0iD64.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/fwlib30i64.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/fwlibNCG64.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/fwlibe1.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/fwlibe64.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/msvcp110d.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Debug/msvcr110d.dll" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/processFiles_0223.py" beforeDir="false" afterPath="$PROJECT_DIR$/processFiles_0223.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sheets.csv" beforeDir="false" afterPath="$PROJECT_DIR$/sheets.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/data_pre.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/data_pre.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test02.py" beforeDir="false" afterPath="$PROJECT_DIR$/test02.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/调用动态链接库.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/调用动态链接库.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,6 +53,7 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\57852\Desktop\test01\znmx_xc" />
       <recent name="C:\Users\57852\Desktop\test01\znmx_xc\test" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
@@ -49,8 +73,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.data_pre">
-    <configuration name="读取表格文件" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.processFiles_0223">
+    <configuration name="测试时间" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="znmx_project-master" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -63,7 +87,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\57852\Desktop\test01\znmx_xc\test\读取表格文件.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/测试时间.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -72,7 +96,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="data_pre" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="创建文件" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="znmx_project-master" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -85,7 +109,51 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/data_pre.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/创建文件.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="processFiles_0223" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="znmx_project-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/processFiles_0223.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test02 (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="znmx_project-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\57852\Desktop\test01\znmx_xc\test02.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -116,34 +184,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test_api" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="znmx_project-master" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\57852\Desktop\test01\znmx_xc\test\test_api.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.data_pre" />
+        <item itemvalue="Python.processFiles_0223" />
+        <item itemvalue="Python.创建文件" />
+        <item itemvalue="Python.测试时间" />
         <item itemvalue="Python.test02" />
-        <item itemvalue="Python.test_api" />
-        <item itemvalue="Python.读取表格文件" />
+        <item itemvalue="Python.test02 (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -158,7 +205,7 @@
       <option name="presentableId" value="Default" />
       <updated>1614758270855</updated>
       <workItem from="1614758282066" duration="6529000" />
-      <workItem from="1615189521308" duration="4372000" />
+      <workItem from="1615189521308" duration="14487000" />
     </task>
     <task id="LOCAL-00001" summary="0308下午修改">
       <created>1615193117133</created>
@@ -174,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615193250306</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="修改计算健康度方法">
+      <created>1615193920797</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1615193920797</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -194,12 +248,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0308下午修改" />
     <MESSAGE value="0308下午修改1" />
-    <option name="LAST_COMMIT_MESSAGE" value="0308下午修改1" />
+    <MESSAGE value="修改计算健康度方法" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改计算健康度方法" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/znmx_xc$.coverage" NAME="创建文件 Coverage Results" MODIFIED="1615256221111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/znmx_xc$processFiles_0223.coverage" NAME="processFiles_0223 Coverage Results" MODIFIED="1615258210946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_project_master$test_api.coverage" NAME="test_api Coverage Results" MODIFIED="1614763268173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$test02__1_.coverage" NAME="test02 (1) Coverage Results" MODIFIED="1615250864388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/znmx_xc$data_pre.coverage" NAME="data_pre Coverage Results" MODIFIED="1615193879914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/znmx_project_master$.coverage" NAME="读取表格文件 Coverage Results" MODIFIED="1614762073447" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/znmx_xc$test02.coverage" NAME="test02 Coverage Results" MODIFIED="1615190121285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$test02.coverage" NAME="test02 Coverage Results" MODIFIED="1615252279173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

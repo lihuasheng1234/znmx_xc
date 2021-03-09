@@ -3,7 +3,7 @@ import os
 
 # 时间字符串格式
 DATETIME_PATTERN = "%Y-%m-%d %H:%M:%S"
-
+DATETIME_PATTERN1 = "%Y-%m-%d-%H-%M-%S"
 # 负载小于到少判断为主轴未转动
 MIN_VALUE = 0
 
@@ -18,7 +18,7 @@ mysql_info = {
     "cursorclass" : pymysql.cursors.DictCursor
 }
 
-IS_LOCAL = True
+IS_LOCAL = False
 
 # 计算健康度时间间隔 毫秒
 TOOLHEALTH_COMPUTE_BLANKING_TIME = 5*1000
@@ -41,6 +41,9 @@ VIBDATA_DB_GET_BLANKING_TIME = 100
 # 每个间隔内从数据库中获取的数据条数
 VIBDATA_COUNT = VIBDATA_DB_GET_BLANKING_TIME//VIBDATA_DB_TIME
 
+# 从数据库获取振动数据间隔 毫秒
+LEARNNING_MODEL_BLANKING_TIME = 2*1000
+
 # 刀具健康度mysql
 hp_mysql_info = {
     "host" : "192.168.1.33",  # mysql服务端ip
@@ -56,7 +59,7 @@ hp_mysql_info = {
 mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "VibrationData",
-    "tb_name" : "Sensor04",
+    "tb_name" : "Sensor03",
     "connect_timeoutMS" : "10000",
 }
 hub_url = "http://202.104.118.59:8070/signalr/" if not IS_LOCAL else "http://localhost:8070/signalr/"
@@ -83,8 +86,9 @@ TOOL_HP_CACHE_POST_PARRM = {
 MACHINE1_IP = "10.143.60.119"
 MACHINE2_IP = "111.111.1.1"
 
-MACHINEINFO_DB_PATH = r'D:\fanuc\debug\fanuc_iot.db'
+MACHINEINFO_DB_PATH = r'C:\Users\57852\Desktop\fanuc_iot.db'
 SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM, ACT_FEED, ACT_SPEED from FANUC_IOT order by ID desc limit 1;"
 
 DLL_PATH = r'D:\znmx_xc\znmx_xc-master\Debug'
 DLL_NAME = r'D:\znmx_xc\znmx_xc-master\Debug\API.dll'
+LEARNNING_MODEL = False
