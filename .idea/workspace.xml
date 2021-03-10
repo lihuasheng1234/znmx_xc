@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0450c0ee-99d6-4592-95d9-a01ffc62cad7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test/测试日志写入.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/processFiles_0223.py" beforeDir="false" afterPath="$PROJECT_DIR$/processFiles_0223.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -183,7 +181,7 @@
       <option name="presentableId" value="Default" />
       <updated>1614758270855</updated>
       <workItem from="1614758282066" duration="6529000" />
-      <workItem from="1615189521308" duration="19355000" />
+      <workItem from="1615189521308" duration="21520000" />
     </task>
     <task id="LOCAL-00001" summary="0308下午修改">
       <created>1615193117133</created>
@@ -213,7 +211,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615258322080</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="0310添加日志功能">
+      <created>1615343472644</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1615343472644</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,11 +240,12 @@
     <MESSAGE value="0308下午修改1" />
     <MESSAGE value="修改计算健康度方法" />
     <MESSAGE value="0309上午" />
-    <option name="LAST_COMMIT_MESSAGE" value="0309上午" />
+    <MESSAGE value="0310添加日志功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="0310添加日志功能" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/znmx_xc$.coverage" NAME="测试日志写入 Coverage Results" MODIFIED="1615341905633" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
-    <SUITE FILE_PATH="coverage/znmx_xc$processFiles_0223.coverage" NAME="processFiles_0223 Coverage Results" MODIFIED="1615343078192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/znmx_xc$processFiles_0223.coverage" NAME="processFiles_0223 Coverage Results" MODIFIED="1615345543483" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_project_master$test_api.coverage" NAME="test_api Coverage Results" MODIFIED="1614763268173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_xc$test02__1_.coverage" NAME="test02 (1) Coverage Results" MODIFIED="1615250864388" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/znmx_xc$data_pre.coverage" NAME="data_pre Coverage Results" MODIFIED="1615193879914" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />

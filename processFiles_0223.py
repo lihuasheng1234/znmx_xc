@@ -182,7 +182,9 @@ class ProcessData(threading.Thread):
         :param data:
         :return:
         """
+
         data = ",".join([str(i) for i in data])
+
         try:
             self.hub.server.invoke("broadcastDJJK_Working", self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
@@ -303,9 +305,16 @@ class ProcessData(threading.Thread):
         :param data:
         :return:
         """
+        val = 600
+        max_abs_val = max(abs(min(data)), abs(max(data)))
+        if 600 < max_abs_val < 1000:
+            val = 1000
+        elif 1000 < max_abs_val < 1500:
+            val = 1500
+        else:
+            val = 2000
         data = ",".join([str(i) for i in data])
         try:
-            
             self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
             print(e)
@@ -313,7 +322,7 @@ class ProcessData(threading.Thread):
 
     def 处理振动数据(self):
         """
-        把振动数据降维处理
+        把振动数据降频处理
         :return:
         """
         self.processed_raw_vibData = self.raw_vibData_cache[:60]
