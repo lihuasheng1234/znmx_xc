@@ -484,6 +484,7 @@ class ProcessData(threading.Thread):
         self.clean_vibdata_cache()
         self.raw_vibData_cache = []
         self.load_cache = []
+
     def 保存振动数据到本地(self):
         file_name = self.now.strftime(settings.DATETIME_PATTERN1) + ".txt"
         data_dir_name = 'data'
@@ -516,6 +517,7 @@ class ProcessData(threading.Thread):
 
                 else:
                     try:
+
                         self.prepare_machineInfo()
                         self.prepare_vibrationData()
                         if self.机台正在加工():
@@ -528,6 +530,7 @@ class ProcessData(threading.Thread):
                     except Exception as e:
                         print(e)
                         self.ready = False
+                time.sleep(0.00001)
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)
@@ -539,6 +542,7 @@ if __name__ == '__main__':
     t = []
 
     t.append(ProcessData())
+
     for t1 in t:
         t1.start()
     for t1 in t:
