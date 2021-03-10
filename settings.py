@@ -89,6 +89,12 @@ MACHINE2_IP = "111.111.1.1"
 MACHINEINFO_DB_PATH = r'C:\Users\57852\Desktop\fanuc_iot.db'
 SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM, ACT_FEED, ACT_SPEED from FANUC_IOT order by ID desc limit 1;"
 
-DLL_PATH = r'D:\znmx_xc\znmx_xc-master\Debug'
-DLL_NAME = r'D:\znmx_xc\znmx_xc-master\Debug\API.dll'
+DLL_PATH =BASE_PATH
+DLL_NAME = os.path.join(DLL_PATH, "API.dll")
 LEARNNING_MODEL = False
+# 日志配置参数
+kwargs = {
+    "filename": "logs.txt",
+    "format": "%(asctime)s - %(message)s",
+    "mode": "a",
+}

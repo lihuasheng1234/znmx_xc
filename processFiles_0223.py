@@ -6,6 +6,7 @@ import requests
 from gevent import monkey
 
 monkey.patch_all()
+import logging
 
 import sqlite3
 from functools import wraps
@@ -47,6 +48,7 @@ class ProcessData(threading.Thread):
         self.s = requests.Session()
         self.companyNo = "CMP20210119001"
         self.deviceNo = "0001"
+        self.logger = logging.getLogger()
     @property
     def now(self):
         return datetime.datetime.now()
@@ -83,6 +85,8 @@ class ProcessData(threading.Thread):
         try:
             self.get_mangodb_connect()
             self.set_machineinfo_from_file()
+
+            self.set_logger()
             if not settings.LEARNNING_MODEL:
                 # self.get_mysql_connect()
                 self.get_signalr_hub()
@@ -90,6 +94,15 @@ class ProcessData(threading.Thread):
         except Exception as e:
             print(e)
             self.ready = False
+
+    def set_logger(self):
+        print(self.logger.handlers)
+        if not self.logger.handlers:
+            fh = logging.FileHandler(filename=settings.kwargs['filename'], mode=settings.kwargs['mode'], encoding="utf-8")
+            formatter = logging.Formatter(settings.kwargs['format'])
+            fh.setFormatter(formatter)
+            self.logger.addHandler(fh)
+            self.logger.setLevel(logging.WARNING)
 
     def get_mangodb_connect(self):
         """
@@ -335,19 +348,28 @@ class ProcessData(threading.Thread):
         flag = 0
         if flag_wear:
             print("磨损报警")
+            self.写入日志("刀具%s-->出现磨损报警" % self.tool_num)
             flag = 1
         print(alpha)
         if alpha <= hp_abs_val < alpha + 0.2:
             print("崩缺报警")
+            self.写入日志("刀具%s-->出现崩缺报警" % self.tool_num)
             flag = 2
         elif alpha + 0.2 <= hp_abs_val:
+            self.写入日志("刀具%s-->出现断刀报警"%self.tool_num)
             print("断刀报警")
             flag = 3
         if self.load > 100:
             self.进行机台报警()
+            self.写入日志("机台%s-->负载过高报警" % self.deviceNo)
         if flag:
+
             self.进行机台报警()
             self.进行UI报警(type=flag)
+
+    def 写入日志(self, msg):
+        self.logger.warning(msg)
+
 
     def 发送健康度到API(self):
         data = settings.TOOL_HP_CACHE_POST_PARRM
@@ -372,11 +394,12 @@ class ProcessData(threading.Thread):
 
             
     def 进行机台报警(self):
+        return
         print("机台报警")
-        os.add_dll_directory(r'D:\znmx_xc\znmx_xc-master1');
+        os.chdir(settings.BASE_PATH)
+        os.add_dll_directory(settings.DLL_PATH);
         so = ctypes.cdll.LoadLibrary
-        lib = so(r'D:\znmx_xc\znmx_xc-master1\API.dll');
-        #print(dir(lib))
+        lib = so(settings.DLL_NAME);
         lib.setAlarm.restype = ctypes.c_char_p
         ret = lib.setAlarm(settings.MACHINE1_IP,len(settings.MACHINE1_IP),802, 3);
 
