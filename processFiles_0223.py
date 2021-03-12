@@ -1,19 +1,17 @@
 import csv
 import json
-import os, sys
+import os
 import ctypes
 import requests
 from gevent import monkey
 
 monkey.patch_all()
-import logging
 
-import sqlite3
+import logging
 from functools import wraps
 import threading
 import time
 import datetime
-from math import sqrt, log
 import numpy as np
 from math import *
 import pymongo
@@ -27,6 +25,8 @@ import settings
 """
 
 """
+
+
 class ProcessData(threading.Thread):
     def __init__(self):
         super().__init__()
@@ -49,6 +49,7 @@ class ProcessData(threading.Thread):
         self.companyNo = "CMP20210119001"
         self.deviceNo = "0001"
         self.logger = logging.getLogger()
+
     @property
     def now(self):
         return datetime.datetime.now()
@@ -63,6 +64,7 @@ class ProcessData(threading.Thread):
         参数 blanking_time: 间隔时间
             flag: 如果为True 将在指定时间后执行 否则立马执行
         """
+
         def decorate(func):
             @wraps(func)
             def ware(self, *args, **kwargs):
@@ -77,7 +79,9 @@ class ProcessData(threading.Thread):
                 elif (self.now - last_time) >= timedelta(milliseconds=blanking_time):
                     self.dic[func] = self.now
                     return func(self, *args, **kwargs)
+
             return ware
+
         return decorate
 
     def setup(self):
@@ -85,7 +89,6 @@ class ProcessData(threading.Thread):
         try:
             self.get_mangodb_connect()
             self.set_machineinfo_from_file()
-
             self.set_logger()
             if not settings.LEARNNING_MODEL:
                 # self.get_mysql_connect()
@@ -98,7 +101,8 @@ class ProcessData(threading.Thread):
     def set_logger(self):
         print(self.logger.handlers)
         if not self.logger.handlers:
-            fh = logging.FileHandler(filename=settings.kwargs['filename'], mode=settings.kwargs['mode'], encoding="utf-8")
+            fh = logging.FileHandler(filename=settings.kwargs['filename'], mode=settings.kwargs['mode'],
+                                     encoding="utf-8")
             formatter = logging.Formatter(settings.kwargs['format'])
             fh.setFormatter(formatter)
             self.logger.addHandler(fh)
@@ -108,8 +112,14 @@ class ProcessData(threading.Thread):
         """
         获取mongodb连接
         """
-        self.mangodb_connect = pymongo.MongoClient(settings.mangodb_info['host'], serverSelectionTimeoutMS=settings.mangodb_info['connect_timeoutMS'])
-        dblist = self.mangodb_connect.list_database_names()
+        self.vibdata_mangodb_connect = pymongo.MongoClient(settings.vibdata_mangodb_info['host'],
+                                                           serverSelectionTimeoutMS=settings.vibdata_mangodb_info[
+                                                               'connect_timeoutMS'])
+        self.machineinfo_mangodb_connect = pymongo.MongoClient(settings.machineInfo_mangodb_info['host'],
+                                                               serverSelectionTimeoutMS=settings.vibdata_mangodb_info[
+                                                                   'connect_timeoutMS'])
+        self.vibdata_mangodb_connect.list_database_names()
+        self.machineinfo_mangodb_connect.list_database_names()
 
     def get_mysql_connect(self):
         """
@@ -133,7 +143,7 @@ class ProcessData(threading.Thread):
         每个一秒钟从数据库中获取一次振动数据并处理成相应格式
         """
         origin_data = self.get_origin_vibrationData()
-        #print(origin_data)
+        # print(origin_data)
         self.process_vibrationData(origin_data)
         self.make_vibDate_cache()
 
@@ -141,8 +151,8 @@ class ProcessData(threading.Thread):
         """
         从数据库中获得原始数据
         """
-        cols = self.mangodb_connect["VibrationData"][settings.mangodb_info["tb_name"]].find({}, sort=[('_id', pymongo.DESCENDING)],
-                                                                      limit=limit)
+        cols = self.vibdata_mangodb_connect["VibrationData"][settings.vibdata_mangodb_info["tb_name"]].find({}, sort=[
+            ('_id', pymongo.DESCENDING)], limit=limit)
         return list(cols)[::-1]
 
     def process_vibrationData(self, db_data):
@@ -153,7 +163,7 @@ class ProcessData(threading.Thread):
         data = []
         for item in db_data:
             data.extend(item['zdata'])
-        data = [x+50 for x in data]
+        data = [x + 50 for x in data]
         self.pre_data = data
         return data
 
@@ -163,8 +173,14 @@ class ProcessData(threading.Thread):
         origin_machineinfo = self.get_origin_machineinfo()
         self.set_machineinfo(origin_machineinfo)
         if self.tool_num not in self.user_settings.keys():
+            self.user_settings[self.tool_num] = {
+                "feed": float(5000),
+                "speed": float(5000),
+                "model": "AAAAA",
+                "var1": float(0.2),
+                "var2": float(0.6),
+            }
             print("用户还未设定当前刀具信息")
-            raise Exception
         self.make_load_cache()
 
     def make_load_cache(self):
@@ -172,10 +188,10 @@ class ProcessData(threading.Thread):
 
     @clothes(settings.LOADDATA_UPLOAD_BLANKING_TIME, flag=True)
     def 发送负载数据到云端(self):
-        print("发送负载到云端%s"%self.load_cache)
+        print("发送负载到云端%s" % self.load_cache)
         self.put_loaddata_to_cloud(self.load_cache)
         self.load_cache = []
-        
+
     def put_loaddata_to_cloud(self, data):
         """
         发送负载数据到云端 通过websocket
@@ -186,7 +202,7 @@ class ProcessData(threading.Thread):
         data = ",".join([str(i) for i in data])
 
         try:
-            self.hub.server.invoke("broadcastDJJK_Working", self.companyNo, self.deviceNo, self.now_str, data)
+            self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -197,23 +213,23 @@ class ProcessData(threading.Thread):
         SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM, ACT_FEED, ACT_SPEED
         :return:
         """
-        con = sqlite3.connect(settings.MACHINEINFO_DB_PATH)
-        cur = con.cursor()
-
-        cur.execute(settings.SQLITE_SQL)
-        ret = cur.fetchone()
-        set_feed = ret[1]
-        act_feed = ret[4]
-        set_speed = ret[2]
-        act_speed = ret[5]
-        load = ret[0]
-        tool_num = ret[3]
+        db_name = settings.machineInfo_mangodb_info["db_name"]
+        tb_name = settings.machineInfo_mangodb_info["tb_name"]
+        ret = self.machineinfo_mangodb_connect[db_name][tb_name].find({}, sort=[('_id', pymongo.DESCENDING)], limit=1)
+        ret = list(ret)[0]
+        set_feed = ret["feed"][0]
+        act_feed = ret["feed"][0]
+        set_speed = ret["speed"][0]
+        act_speed = ret["speed"][0]
+        load = ret["load"][0]
+        tool_num = ret["tool"][0]
 
         if tool_num < 10:
             tool_num = "T0" + str(tool_num)
         else:
             tool_num = "T" + str(tool_num)
-        return {"set_feed": set_feed, "act_feed": act_feed, "set_speed": set_speed,"act_speed": act_speed, "tool_num":tool_num, 'load':load}
+        return {"set_feed": set_feed, "act_feed": act_feed, "set_speed": set_speed, "act_speed": act_speed,
+                "tool_num": tool_num, 'load': load}
 
     def set_machineinfo(self, origin_machineinfo):
         """
@@ -235,7 +251,7 @@ class ProcessData(threading.Thread):
         读取出来的数据均为字符串
         :return:
         """
-        #print(settings.SHEET_PATH)
+        # print(settings.SHEET_PATH)
         csvFile = open(settings.SHEET_PATH, "r", encoding="utf-8")
         reader = csv.reader(csvFile)
         user_settings = {}
@@ -243,11 +259,11 @@ class ProcessData(threading.Thread):
         for row in reader:
             if "T" in row[0]:
                 tool_num = row[0]
-                s = row[1]
-                f = row[2]
-                model = row[3]
-                val1 = row[4]
-                val2 = row[5]
+                s = 0
+                f = 0
+                model = row[1]
+                val1 = row[2]
+                val2 = row[3]
                 user_settings[tool_num] = {
                     "feed": float(f),
                     "speed": float(s),
@@ -268,20 +284,23 @@ class ProcessData(threading.Thread):
         把振动数据缓存起来
 
         """
-        #print(self.机台正在加工())
+        # print(self.机台正在加工())
         # 缓存健康度计算数据
         if self.机台正在加工():
             self.vibData_cache.append(self.pre_data)
 
         self.raw_vibData_cache.extend(self.pre_data)
+
     def 判断机台进给(self):
         if self.set_feed - 100 < self.act_feed and self.act_feed < self.set_feed + 100:
             return True
         return False
+
     def 判断机台转速(self):
         if self.set_speed - 100 < self.act_speed and self.act_speed < self.set_speed + 100:
             return True
         return False
+
     def 机台正在加工(self):
         if self.判断机台转速() and self.判断机台进给():
             return True
@@ -298,7 +317,7 @@ class ProcessData(threading.Thread):
         self.处理振动数据()
         self.put_vibdata_to_cloud(self.processed_raw_vibData)
         self.raw_vibData_cache = []
-        
+
     def put_vibdata_to_cloud(self, data):
         """
         把处理过的振动数据 通过websocket发送到指定地址
@@ -311,11 +330,13 @@ class ProcessData(threading.Thread):
             val = 1000
         elif 1000 < max_abs_val < 1500:
             val = 1500
-        else:
+        elif max_abs_val >= 1500:
             val = 2000
+        data.insert(0, val)
         data = ",".join([str(i) for i in data])
+        print(data)
         try:
-            self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now_str, data)
+            self.hub.server.invoke("broadcastDJJK_Working", self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -343,6 +364,7 @@ class ProcessData(threading.Thread):
         self.刀具报警判断(flag_wear)
         self.发送健康度到API()
         self.clean_vibdata_cache()
+
     def 刀具报警判断(self, flag_wear):
         """
         根据刀具健康度与前一个计算的健康度差值进行报警处理
@@ -365,20 +387,18 @@ class ProcessData(threading.Thread):
             self.写入日志("刀具%s-->出现崩缺报警" % self.tool_num)
             flag = 2
         elif alpha + 0.2 <= hp_abs_val:
-            self.写入日志("刀具%s-->出现断刀报警"%self.tool_num)
+            self.写入日志("刀具%s-->出现断刀报警" % self.tool_num)
             print("断刀报警")
             flag = 3
-        if self.load > 100:
+        if self.load > settings.MAX_LOAD_WARMING:
             self.进行机台报警()
             self.写入日志("机台%s-->负载过高报警" % self.deviceNo)
         if flag:
-
             self.进行机台报警()
             self.进行UI报警(type=flag)
 
     def 写入日志(self, msg):
         self.logger.warning(msg)
-
 
     def 发送健康度到API(self):
         data = settings.TOOL_HP_CACHE_POST_PARRM
@@ -386,7 +406,7 @@ class ProcessData(threading.Thread):
         data["start_date"] = self.now_str
         data["tool_position"] = self.tool_num
         resp = self.s.post(settings.TOOL_HP_CACHE_POST_URL, data=data)
-        
+
     def 进行UI报警(self, type):
         print("ui报警")
         json_data = [
@@ -399,19 +419,15 @@ class ProcessData(threading.Thread):
             },
         ]
         self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
-        
 
-            
     def 进行机台报警(self):
-        return
         print("机台报警")
         os.chdir(settings.BASE_PATH)
         os.add_dll_directory(settings.DLL_PATH);
         so = ctypes.cdll.LoadLibrary
         lib = so(settings.DLL_NAME);
         lib.setAlarm.restype = ctypes.c_char_p
-        ret = lib.setAlarm(settings.MACHINE1_IP,len(settings.MACHINE1_IP),802, 3);
-
+        ret = lib.setAlarm(settings.MACHINE1_IP, len(settings.MACHINE1_IP), 802, 3);
 
     def 运行对应算法计算健康度(self):
         model = self.user_settings[self.tool_num]["model"]
@@ -421,7 +437,6 @@ class ProcessData(threading.Thread):
         ret = self.alarm(self.vibData_cache, float(beta))
 
         return ret
-
 
     '''
     输入：数据raw_data、崩缺调整系数alpha、磨损调整系数beta
@@ -443,21 +458,23 @@ class ProcessData(threading.Thread):
             flag_wear = 1
 
         return H, flag_wear
+
     def 发送健康度到云端(self):
         self.put_hpdata_to_cloud(self.tool_hp)
-        print("发送到云端:健康度->%s,刀具->%s"%(self.tool_hp, self.tool_num))
+        print("发送到云端:健康度->%s,刀具->%s" % (self.tool_hp, self.tool_num))
 
     def put_hpdata_to_cloud(self, data):
         companyNo = "CMP20210119001"
         deviceNo = '0001'
         try:
-            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, self.tool_num, self.now_str, data*100)
+            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, self.tool_num, self.now_str, data * 100)
         except Exception as e:
             print(e)
             self.ready = False
 
     def clean_vibdata_cache(self):
         self.vibData_cache = []
+
     @property
     def 机台换刀(self):
         return True if self.tool_num_pre and self.tool_num != self.tool_num_pre else False
@@ -472,8 +489,12 @@ class ProcessData(threading.Thread):
         显示当前算法运行状况
         """
 
-        print("当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}, 机台是否正在加工"
-              .format(self.set_speed, self.set_feed, self.tool_num,self.set_speed, self.set_feed, self.load, self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)), self.机台正在加工())
+        print(
+            "当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}, 机台是否正在加工"
+                .format(self.set_speed, self.set_feed, self.tool_num, self.set_speed, self.set_feed, self.load,
+                        self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)),
+            self.机台正在加工())
+
     @clothes(settings.LEARNNING_MODEL_BLANKING_TIME, flag=True)
     def 学习模式(self):
         """
@@ -486,7 +507,7 @@ class ProcessData(threading.Thread):
         self.load_cache = []
 
     def 保存振动数据到本地(self):
-        file_name = self.now.strftime(settings.DATETIME_PATTERN1) + ".txt"
+        file_name = self.now.strftime(settings.SAVEDDATA_FILENAME_FORMAT) + ".txt"
         data_dir_name = 'data'
         data_dir_path = os.path.join(settings.BASE_PATH, data_dir_name, self.tool_num)
         os.makedirs(data_dir_path, exist_ok=True)
@@ -530,10 +551,11 @@ class ProcessData(threading.Thread):
                     except Exception as e:
                         print(e)
                         self.ready = False
-                time.sleep(0.00001)
+                time.sleep(0.001)
             if not self.ready:
                 print("五秒后重试")
                 time.sleep(5)
+
 
 if __name__ == '__main__':
 
