@@ -1,0 +1,49 @@
+{
+    "company_no": "",
+    "device_no": "",
+    "milling": {
+        "macroAdjust": "800",
+        "log": "0",
+        "feedArr": "0,1,2,4,6,8,10,15,20,30,40,50,60,70,80,95,100,105,110,120",
+        "ip": "",
+        "port": "8193",
+        "optimize": "0",
+        "learn": "0",
+        "upperLoad": "0",
+        "lowerLoad": "0"
+    },
+    "spindle": {
+        "signalr_connect_params_url": "",
+        "signalr_connect_params_hubname": "",
+        "signalR_connect_params_funcname": "",
+        "spindle_status_post_params": ""
+    },
+    "damage":{
+        "signalr_connect_params_url": "http://202.104.118.59:8070/signalr/",
+        "signalr_connect_params_hubname": "dashBoardHub",
+        "signalR_connect_load_funcname": "broadcastDJJK_FZ",
+        "signalR_connect_raw_funcname": "broadcastDJJK_Working",
+        "signalR_connect_rws_funcname": "broadcastDJJK_Health",
+        "signalR_connect_alarm_funcname": "BroadcastDJJK_Alarm",
+        "spindle_status_post_params": "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect",
+        "T01":"AAAA,0.2,0.6",
+        "T02":"AAAA,0.2,0.6",
+        "T03":"AAAA,0.2,0.6",
+        "T04":"AAAA,0.2,0.6",
+        "T05":"AAAA,0.2,0.6",
+        "T06":"AAAA,0.2,0.6",
+        "T07":"AAAA,0.2,0.6",
+        "T08":"AAAA,0.2,0.6",
+        "T10":"AAAA,0.2,0.6",
+        "T11":"AAAA,0.2,0.6",
+        "T12":"AAAA,0.2,0.6",
+        "T13":"AAAA,0.2,0.6",
+        "T14":"AAAA,0.2,0.6",
+        "T15":"AAAA,0.2,0.6",
+        "T16":"AAAA,0.2,0.6",
+        "T17":"AAAA,0.2,0.6",
+        "T18":"AAAA,0.2,0.6",
+        "T19":"AAAA,0.2,0.6",
+        "T20":"AAAA,0.2,0.6"
+    }
+}

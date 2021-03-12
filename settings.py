@@ -1,6 +1,12 @@
 ﻿import os
-
+import json
 BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+SETTINGS_PATH = os.path.join(BASE_PATH, "config.json")
+with open(SETTINGS_PATH, 'r', encoding='utf-8') as f:
+    #print(list(f.readlines()))
+    json_data = json.load(f)
+TOTAL_SETTINGS = json_data
+
 # 时间字符串格式
 DATETIME_PATTERN = "%Y-%m-%d %H:%M:%S"
 # 训练数据保存格式
@@ -56,8 +62,8 @@ machineInfo_mangodb_info = {
 
 #websocket 发送配置
 signalr_hub_info = {
-    "url": "http://202.104.118.59:8070/signalr/" if not IS_LOCAL else "http://localhost:8070/signalr/",
-    "name": "dashBoardHub",
+    "url": TOTAL_SETTINGS["damage"]["signalr_connect_params_url"] if not IS_LOCAL else "http://localhost:8070/signalr/",
+    "name": TOTAL_SETTINGS["damage"]["signalr_connect_params_hubname"],
 }
 
 # 读取用户设定文件配置
@@ -66,7 +72,7 @@ SHEET_PATH = os.path.join(BASE_PATH, "sheets.csv")
 
 
 # 刀具健康度缓存数据接口
-TOOL_HP_CACHE_POST_URL = "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect" if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"  
+TOOL_HP_CACHE_POST_URL = TOTAL_SETTINGS["damage"]["spindle_status_post_params"] if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"
 TOOL_HP_CACHE_POST_PARRM = {
         "company_no": "CMP20210119001",
         "device_no": "0001",
@@ -90,3 +96,8 @@ kwargs = {
     "format": "%(asctime)s - %(message)s",
     "mode": "a",
 }
+
+WORKING_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_raw_funcname"]
+FZ_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_load_funcname"]
+HEALTH_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_rws_funcname"]
+ALARM_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_alarm_funcname"]

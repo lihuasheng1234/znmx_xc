@@ -202,7 +202,7 @@ class ProcessData(threading.Thread):
         data = ",".join([str(i) for i in data])
 
         try:
-            self.hub.server.invoke("broadcastDJJK_FZ", self.companyNo, self.deviceNo, self.now_str, data)
+            self.hub.server.invoke(settings.FZ_HUB_NAME, self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -251,19 +251,17 @@ class ProcessData(threading.Thread):
         读取出来的数据均为字符串
         :return:
         """
-        # print(settings.SHEET_PATH)
-        csvFile = open(settings.SHEET_PATH, "r", encoding="utf-8")
-        reader = csv.reader(csvFile)
         user_settings = {}
         # 迭代所有的行
-        for row in reader:
-            if "T" in row[0]:
-                tool_num = row[0]
+        for key in settings.json_data["damage"]:
+            if key.startswith("T"):
+                temp = settings.json_data["damage"][key].split(',')
+                tool_num = key
                 s = 0
                 f = 0
-                model = row[1]
-                val1 = row[2]
-                val2 = row[3]
+                model = temp[0]
+                val1 = temp[1]
+                val2 = temp[2]
                 user_settings[tool_num] = {
                     "feed": float(f),
                     "speed": float(s),
@@ -336,7 +334,7 @@ class ProcessData(threading.Thread):
         data = ",".join([str(i) for i in data])
         print(data)
         try:
-            self.hub.server.invoke("broadcastDJJK_Working", self.companyNo, self.deviceNo, self.now_str, data)
+            self.hub.server.invoke(settings.WORKING_HUB_NAME, self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
             print(e)
             self.ready = False
@@ -418,7 +416,7 @@ class ProcessData(threading.Thread):
 
             },
         ]
-        self.hub.server.invoke("BroadcastDJJK_Alarm", self.companyNo, json.dumps(json_data))
+        self.hub.server.invoke(settings.ALARM_HUB_NAME, self.companyNo, json.dumps(json_data))
 
     def 进行机台报警(self):
         print("机台报警")
@@ -467,7 +465,7 @@ class ProcessData(threading.Thread):
         companyNo = "CMP20210119001"
         deviceNo = '0001'
         try:
-            self.hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, self.tool_num, self.now_str, data * 100)
+            self.hub.server.invoke(settings.HEALTH_HUB_NAME, companyNo, deviceNo, self.tool_num, self.now_str, data * 100)
         except Exception as e:
             print(e)
             self.ready = False
