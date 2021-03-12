@@ -1,27 +1,22 @@
-﻿import pymysql
-import os
+﻿import os
 
+BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 # 时间字符串格式
 DATETIME_PATTERN = "%Y-%m-%d %H:%M:%S"
-DATETIME_PATTERN1 = "%Y-%m-%d-%H-%M-%S"
-# 负载小于到少判断为主轴未转动
-MIN_VALUE = 0
+# 训练数据保存格式
+SAVEDDATA_FILENAME_FORMAT = "%Y-%m-%d-%H-%M-%S"
 
-#mysql settings
-mysql_info = {
-    "host" : "192.168.1.33",  # mysql服务端ip
-    "port" : 3306,  # mysql端口
-    "user" : "root",  # mysql 账号
-    "password" : "root",
-    "db" : "znmx",
-    "charset" : "utf8",
-    "cursorclass" : pymysql.cursors.DictCursor
-}
+# 负载报警阈值
+MAX_LOAD_WARMING = 100
 
+#是否为本地模式
 IS_LOCAL = False
 
+# 保存数据开关
+LEARNNING_MODEL = False
+
 # 计算健康度时间间隔 毫秒
-TOOLHEALTH_COMPUTE_BLANKING_TIME = 5*1000
+TOOLHEALTH_COMPUTE_BLANKING_TIME = 3*1000
 
 # 负载上传时间 毫秒
 LOADDATA_UPLOAD_BLANKING_TIME = 1*1000
@@ -44,32 +39,29 @@ VIBDATA_COUNT = VIBDATA_DB_GET_BLANKING_TIME//VIBDATA_DB_TIME
 # 从数据库获取振动数据间隔 毫秒
 LEARNNING_MODEL_BLANKING_TIME = 2*1000
 
-# 刀具健康度mysql
-hp_mysql_info = {
-    "host" : "192.168.1.33",  # mysql服务端ip
-    "port" : 3306,  # mysql端口
-    "user" : "root",  # mysql 账号
-    "password" : "root",
-    "db" : "znmx",
-    "charset" : "utf8",
-    "cursorclass" : pymysql.cursors.DictCursor
-}
-
 #mangodb settings
-mangodb_info = {
+vibdata_mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "VibrationData",
     "tb_name" : "Sensor03",
     "connect_timeoutMS" : "10000",
 }
-hub_url = "http://202.104.118.59:8070/signalr/" if not IS_LOCAL else "http://localhost:8070/signalr/"
+
+machineInfo_mangodb_info = {
+    "host" : "mongodb://localhost:27017/",
+    "db_name" : "FanucData",
+    "tb_name" : "Machine01",
+    "connect_timeoutMS" : "10000",
+}
+
+#websocket 发送配置
 signalr_hub_info = {
-    "url": hub_url,
+    "url": "http://202.104.118.59:8070/signalr/" if not IS_LOCAL else "http://localhost:8070/signalr/",
     "name": "dashBoardHub",
 }
 
 # 读取用户设定文件配置
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
+
 SHEET_PATH = os.path.join(BASE_PATH, "sheets.csv")
 
 
@@ -84,14 +76,14 @@ TOOL_HP_CACHE_POST_PARRM = {
     }
 
 MACHINE1_IP = "10.143.60.119"
-MACHINE2_IP = "111.111.1.1"
 
 MACHINEINFO_DB_PATH = r'C:\Users\57852\Desktop\fanuc_iot.db'
 SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM, ACT_FEED, ACT_SPEED from FANUC_IOT order by ID desc limit 1;"
 
-DLL_PATH =BASE_PATH
+# 报警接口dll文件路径
+DLL_PATH = BASE_PATH
 DLL_NAME = os.path.join(DLL_PATH, "API.dll")
-LEARNNING_MODEL = False
+
 # 日志配置参数
 kwargs = {
     "filename": "logs.txt",
