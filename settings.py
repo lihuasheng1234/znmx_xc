@@ -101,3 +101,6 @@ WORKING_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_raw_funcname"]
 FZ_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_load_funcname"]
 HEALTH_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_rws_funcname"]
 ALARM_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_alarm_funcname"]
+company_no = TOTAL_SETTINGS["company_no"]
+device_no = TOTAL_SETTINGS["device_no"]
+
