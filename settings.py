@@ -49,14 +49,14 @@ LEARNNING_MODEL_BLANKING_TIME = 2*1000
 vibdata_mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "VibrationData",
-    "tb_name" : "Sensor03",
+    "tb_name" : "Sensor0315",
     "connect_timeoutMS" : "10000",
 }
 
 machineInfo_mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "FanucData",
-    "tb_name" : "Machine01",
+    "tb_name" : "Machine0315",
     "connect_timeoutMS" : "10000",
 }
 
