@@ -216,7 +216,9 @@ class ProcessData(threading.Thread):
         db_name = settings.machineInfo_mangodb_info["db_name"]
         tb_name = settings.machineInfo_mangodb_info["tb_name"]
         ret = self.machineinfo_mangodb_connect[db_name][tb_name].find({}, sort=[('_id', pymongo.DESCENDING)], limit=1)
+        
         ret = list(ret)[0]
+
         set_feed = ret["setFeed"][0]
         act_feed = ret["actFeed"][0]
         set_speed = ret["setSpeed"][0]
@@ -481,6 +483,7 @@ class ProcessData(threading.Thread):
     def 换刀判断(self):
         if self.机台换刀:
             self.dic[self.处理健康度] -= datetime.timedelta(milliseconds=settings.TOOLHEALTH_COMPUTE_BLANKING_TIME)
+
 
     @clothes(1000)
     def show_info(self):
