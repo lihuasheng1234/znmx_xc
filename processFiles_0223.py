@@ -30,7 +30,6 @@ import settings
 class ProcessData(threading.Thread):
     def __init__(self):
         super().__init__()
-
         self.dic = {}
         self.last_transform_time = self.now
         self.vibData_cache = []
@@ -87,6 +86,7 @@ class ProcessData(threading.Thread):
     def setup(self):
         print("正在准备中。。。")
         try:
+
             self.get_mangodb_connect()
             self.set_machineinfo_from_file()
             self.set_logger()
@@ -332,7 +332,6 @@ class ProcessData(threading.Thread):
             val = 2000
         data.insert(0, val)
         data = ",".join([str(i) for i in data])
-        print(data)
         try:
             self.hub.server.invoke(settings.WORKING_HUB_NAME, self.companyNo, self.deviceNo, self.now_str, data)
         except Exception as e:
@@ -379,7 +378,7 @@ class ProcessData(threading.Thread):
             print("磨损报警")
             self.写入日志("刀具%s-->出现磨损报警" % self.tool_num)
             flag = 1
-        print(alpha)
+        #print(alpha)
         if alpha <= hp_abs_val < alpha + 0.2:
             print("崩缺报警")
             self.写入日志("刀具%s-->出现崩缺报警" % self.tool_num)
@@ -481,7 +480,7 @@ class ProcessData(threading.Thread):
         if self.机台换刀:
             self.dic[self.处理健康度] -= datetime.timedelta(milliseconds=settings.TOOLHEALTH_COMPUTE_BLANKING_TIME)
 
-    @clothes(500)
+    @clothes(100)
     def show_info(self):
         """
         显示当前算法运行状况

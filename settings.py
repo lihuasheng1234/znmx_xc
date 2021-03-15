@@ -34,7 +34,7 @@ RAWVIBDATA_UPLOAD_BLANKING_TIME = 1*1000
 VIBDATA_DB_TIME = 100
 
 # 每隔多少时间间隔获取一次机台信息 毫秒
-LOADDATA_DB_GET_BLANKING_TIME = 250
+LOADDATA_DB_GET_BLANKING_TIME = 100
 
 # 从数据库获取振动数据间隔 毫秒
 VIBDATA_DB_GET_BLANKING_TIME = 100
@@ -62,8 +62,8 @@ machineInfo_mangodb_info = {
 
 #websocket 发送配置
 signalr_hub_info = {
-    "url": TOTAL_SETTINGS["damage"]["signalr_connect_params_url"] if not IS_LOCAL else "http://localhost:8070/signalr/",
-    "name": TOTAL_SETTINGS["damage"]["signalr_connect_params_hubname"],
+    "url": TOTAL_SETTINGS["damage"]["signalr_url"] if not IS_LOCAL else "http://localhost:8070/signalr/",
+    "name": TOTAL_SETTINGS["damage"]["signalr_hubname"],
 }
 
 # 读取用户设定文件配置
@@ -72,7 +72,7 @@ SHEET_PATH = os.path.join(BASE_PATH, "sheets.csv")
 
 
 # 刀具健康度缓存数据接口
-TOOL_HP_CACHE_POST_URL = TOTAL_SETTINGS["damage"]["spindle_status_post_params"] if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"
+TOOL_HP_CACHE_POST_URL = TOTAL_SETTINGS["damage"]["data_post_params"] if not IS_LOCAL else "http://localhost:8054/api/TblDeviceFanuc/InsertToolDetect"
 TOOL_HP_CACHE_POST_PARRM = {
         "company_no": "CMP20210119001",
         "device_no": "0001",
@@ -97,7 +97,7 @@ kwargs = {
     "mode": "a",
 }
 
-WORKING_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_raw_funcname"]
-FZ_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_load_funcname"]
-HEALTH_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_rws_funcname"]
-ALARM_HUB_NAME = TOTAL_SETTINGS["damage"]["signalR_connect_alarm_funcname"]
+WORKING_HUB_NAME = TOTAL_SETTINGS["damage"]["raw_send_funcname"]
+FZ_HUB_NAME = TOTAL_SETTINGS["damage"]["load_send_funcname"]
+HEALTH_HUB_NAME = TOTAL_SETTINGS["damage"]["rws_send_funcname"]
+ALARM_HUB_NAME = TOTAL_SETTINGS["damage"]["alarm_send_funcname"]
