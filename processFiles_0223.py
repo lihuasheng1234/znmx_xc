@@ -217,10 +217,10 @@ class ProcessData(threading.Thread):
         tb_name = settings.machineInfo_mangodb_info["tb_name"]
         ret = self.machineinfo_mangodb_connect[db_name][tb_name].find({}, sort=[('_id', pymongo.DESCENDING)], limit=1)
         ret = list(ret)[0]
-        set_feed = ret["feed"][0]
-        act_feed = ret["feed"][0]
-        set_speed = ret["speed"][0]
-        act_speed = ret["speed"][0]
+        set_feed = ret["setFeed"][0]
+        act_feed = ret["actFeed"][0]
+        set_speed = ret["setSpeed"][0]
+        act_speed = ret["actSpeed"][0]
         load = ret["load"][0]
         tool_num = ret["tool"][0]
 
@@ -400,15 +400,17 @@ class ProcessData(threading.Thread):
     def 发送健康度到API(self):
         data = settings.TOOL_HP_CACHE_POST_PARRM
         data["collect_data"] = self.tool_hp
-        data["start_date"] = self.now_str
+        data["collect_date"] = self.now_str
         data["tool_position"] = self.tool_num
+        
         resp = self.s.post(settings.TOOL_HP_CACHE_POST_URL, data=data)
+        print(resp.text)
 
     def 进行UI报警(self, type):
         print("ui报警")
         json_data = [
             {
-                "machine_num": "1",
+                "machine_num": self.deviceNo,
                 "data": [
                     self.tool_num,
                 ]
@@ -480,7 +482,7 @@ class ProcessData(threading.Thread):
         if self.机台换刀:
             self.dic[self.处理健康度] -= datetime.timedelta(milliseconds=settings.TOOLHEALTH_COMPUTE_BLANKING_TIME)
 
-    @clothes(100)
+    @clothes(1000)
     def show_info(self):
         """
         显示当前算法运行状况
@@ -488,7 +490,7 @@ class ProcessData(threading.Thread):
 
         print(
             "当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}, 机台是否正在加工"
-                .format(self.set_speed, self.set_feed, self.tool_num, self.set_speed, self.set_feed, self.load,
+                .format(self.act_speed, self.act_feed, self.tool_num, self.set_speed, self.set_feed, self.load,
                         self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)),
             self.机台正在加工())
 
