@@ -45,8 +45,8 @@ class ProcessData(threading.Thread):
         self.tool_hp = 0
         self.tool_hp_pre = 1
         self.s = requests.Session()
-        self.companyNo = "CMP20210119001"
-        self.deviceNo = "0001"
+        self.companyNo = settings.company_no
+        self.deviceNo = settings.device_no
         self.logger = logging.getLogger()
 
     @property

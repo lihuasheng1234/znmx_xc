@@ -97,6 +97,9 @@ kwargs = {
     "mode": "a",
 }
 
+company_no = TOTAL_SETTINGS["company_no"]
+device_no = TOTAL_SETTINGS["device_no"]
+
 WORKING_HUB_NAME = TOTAL_SETTINGS["damage"]["raw_send_funcname"]
 FZ_HUB_NAME = TOTAL_SETTINGS["damage"]["load_send_funcname"]
 HEALTH_HUB_NAME = TOTAL_SETTINGS["damage"]["rws_send_funcname"]
