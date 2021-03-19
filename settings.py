@@ -10,7 +10,7 @@ TOTAL_SETTINGS = json_data
 # 时间字符串格式
 DATETIME_PATTERN = "%Y-%m-%d %H:%M:%S"
 # 训练数据保存格式
-SAVEDDATA_FILENAME_FORMAT = "%Y-%m-%d-%H-%M-%S"
+SAVEDDATA_FILENAME_FORMAT = "%Y-%m-%d-%H-%M-%S-%f"
 
 # 负载报警阈值
 MAX_LOAD_WARMING = 100
@@ -49,14 +49,14 @@ LEARNNING_MODEL_BLANKING_TIME = 2*1000
 vibdata_mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "VibrationData",
-    "tb_name" : "Sensor0315",
+    "tb_name" : "Sensor0319",
     "connect_timeoutMS" : "10000",
 }
 
 machineInfo_mangodb_info = {
     "host" : "mongodb://localhost:27017/",
     "db_name" : "FanucData",
-    "tb_name" : "Machine0315",
+    "tb_name" : "Machine0319",
     "connect_timeoutMS" : "10000",
 }
 
@@ -81,7 +81,7 @@ TOOL_HP_CACHE_POST_PARRM = {
         "collect_date": "2021-02-24 14:13:00"
     }
 
-MACHINE1_IP = "10.143.60.119"
+MACHINE1_IP = "192.168.1.1"
 
 MACHINEINFO_DB_PATH = r'C:\Users\57852\Desktop\fanuc_iot.db'
 SQLITE_SQL = "select SPINDLE_LOAD, SET_FEED, SET_SPEED, TOOL_NUM, ACT_FEED, ACT_SPEED from FANUC_IOT order by ID desc limit 1;"

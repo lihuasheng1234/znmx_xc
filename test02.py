@@ -12,9 +12,21 @@ import settings
 # print(ret)
 # input()
 import os
-from ctypes import *
+import sys
+import ctypes
+import settings
+def activate_alarm(machine_ip, alarm_flag, alarm_No):
+    base_path = settings.BASE_PATH
+    # !! Necessary for Python to Change Current Working Directory before loading dll
+    os.chdir(os.path.join(base_path, 'Alarm_API'))
+    lib = ctypes.cdll.LoadLibrary('API.dll')
+    lib.setAlarm.restype = ctypes.c_int
+    ret = lib.setAlarm(machine_ip, len(machine_ip), alarm_flag, alarm_No)
+    os.chdir(base_path)
+   
 
-os.add_dll_directory('D:\Debug');
-dll = cdll.LoadLibrary(r'D:\Debug\api.dll');
-ret = dll.setAlarm(settings.MACHINE1_IP,len(settings.MACHINE1_IP),802, 3);
-print(ret)
+if __name__ == "__main__":
+    machine_ip = "192.168.1.1"  # 设备IP地址
+    activate_alarm(machine_ip, 511, 3)
+    
+   

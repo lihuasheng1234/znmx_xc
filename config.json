@@ -26,6 +26,7 @@
         "rws_send_funcname": "broadcastDJJK_Health",
         "alarm_send_funcname": "BroadcastDJJK_Alarm",
         "data_post_params": "http://202.104.118.59:8054/api/TblDeviceFanuc/InsertToolDetect",
+		"T00":"AAAA,0.2,0.6",
         "T01":"AAAA,0.2,0.6",
         "T02":"AAAA,0.2,0.6",
         "T03":"AAAA,0.2,0.6",

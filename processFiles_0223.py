@@ -48,7 +48,7 @@ class ProcessData(threading.Thread):
         self.companyNo = settings.company_no
         self.deviceNo = settings.device_no
         self.logger = logging.getLogger()
-
+        self.val = 30
     @property
     def now(self):
         return datetime.datetime.now()
@@ -163,7 +163,10 @@ class ProcessData(threading.Thread):
         data = []
         for item in db_data:
             data.extend(item['zdata'])
-        data = [x + 50 for x in data]
+        
+        if self.load <= 0.5:
+            self.val = sum(data)/len(data)
+        data = [x - self.val for x in data]
         self.pre_data = data
         return data
 
@@ -422,13 +425,16 @@ class ProcessData(threading.Thread):
         self.hub.server.invoke(settings.ALARM_HUB_NAME, self.companyNo, json.dumps(json_data))
 
     def 进行机台报警(self):
-        print("机台报警")
-        os.chdir(settings.BASE_PATH)
-        os.add_dll_directory(settings.DLL_PATH);
-        so = ctypes.cdll.LoadLibrary
-        lib = so(settings.DLL_NAME);
-        lib.setAlarm.restype = ctypes.c_char_p
-        ret = lib.setAlarm(settings.MACHINE1_IP, len(settings.MACHINE1_IP), 802, 3);
+        machine_ip = settings.MACHINE1_IP
+        alarm_flag = 511
+        alarm_No = 3
+        base_path = settings.BASE_PATH
+        os.chdir(os.path.join(base_path, 'Alarm_API'))
+        lib = ctypes.cdll.LoadLibrary('API.dll')
+        lib.setAlarm.restype = ctypes.c_int
+        ret = lib.setAlarm(machine_ip, len(machine_ip), alarm_flag, alarm_No)
+        os.chdir(base_path)
+        
 
     def 运行对应算法计算健康度(self):
         model = self.user_settings[self.tool_num]["model"]
@@ -490,12 +496,10 @@ class ProcessData(threading.Thread):
         """
         显示当前算法运行状况
         """
-
         print(
             "当前机台->加工刀具:{2},当前转速/预设:{3}->{0},当前进给/预设:{4}->{1},负载:{5},当前健康度:{6},当前振动数据:{7},当前振动缓存数据{8},当前健康度缓存数据{9}, 机台是否正在加工"
                 .format(self.act_speed, self.act_feed, self.tool_num, self.set_speed, self.set_feed, self.load,
-                        self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)),
-            self.机台正在加工())
+                        self.tool_hp, len(self.pre_data), len(self.raw_vibData_cache), len(self.vibData_cache)), self.机台正在加工())
 
     @clothes(settings.LEARNNING_MODEL_BLANKING_TIME, flag=True)
     def 学习模式(self):
@@ -509,6 +513,7 @@ class ProcessData(threading.Thread):
         self.load_cache = []
 
     def 保存振动数据到本地(self):
+        
         file_name = self.now.strftime(settings.SAVEDDATA_FILENAME_FORMAT) + ".txt"
         data_dir_name = 'data'
         data_dir_path = os.path.join(settings.BASE_PATH, data_dir_name, self.tool_num)
@@ -565,6 +570,7 @@ if __name__ == '__main__':
 
     t = []
 
+    t.append(ProcessData())
     t.append(ProcessData())
 
     for t1 in t:
