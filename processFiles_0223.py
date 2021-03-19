@@ -166,7 +166,7 @@ class ProcessData(threading.Thread):
         
         if self.load <= 0.5:
             self.val = sum(data)/len(data)
-        data = [x - self.val for x in data]
+            data = [x - self.val for x in data]
         self.pre_data = data
         return data
 
@@ -295,12 +295,12 @@ class ProcessData(threading.Thread):
         self.raw_vibData_cache.extend(self.pre_data)
 
     def 判断机台进给(self):
-        if self.set_feed - 100 < self.act_feed and self.act_feed < self.set_feed + 100:
+        if self.set_feed != 0 and self.set_feed - 100 < self.act_feed and self.act_feed < self.set_feed + 100:
             return True
         return False
 
     def 判断机台转速(self):
-        if self.set_speed - 100 < self.act_speed and self.act_speed < self.set_speed + 100:
+        if self.set_speed != 0 and  self.set_speed - 100 < self.act_speed and self.act_speed < self.set_speed + 100:
             return True
         return False
 
