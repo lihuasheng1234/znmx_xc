@@ -50,6 +50,7 @@ with Session() as session:
         else:
             time1 = "2021-01-26 08:38:" + str(i)
         hub.server.invoke("broadcastDJJK_Working", companyNo, deviceNo, time1, data_raw)
+
         hub.server.invoke("broadcastDJJK_FZ", companyNo, deviceNo, time1, data)
         #if i == 59:
         hub.server.invoke("broadcastDJJK_Health", companyNo, deviceNo, "T02", time1, "0.5")

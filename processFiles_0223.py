@@ -471,8 +471,8 @@ class ProcessData(threading.Thread):
         print("发送到云端:健康度->%s,刀具->%s" % (self.tool_hp, self.tool_num))
 
     def put_hpdata_to_cloud(self, data):
-        companyNo = "CMP20210119001"
-        deviceNo = '0001'
+        companyNo = self.companyNo
+        deviceNo = self.deviceNo
         try:
             self.hub.server.invoke(settings.HEALTH_HUB_NAME, companyNo, deviceNo, self.tool_num, self.now_str, data * 100)
         except Exception as e:
@@ -491,7 +491,7 @@ class ProcessData(threading.Thread):
             self.dic[self.处理健康度] -= datetime.timedelta(milliseconds=settings.TOOLHEALTH_COMPUTE_BLANKING_TIME)
 
 
-    @clothes(1000)
+    @clothes(5000)
     def show_info(self):
         """
         显示当前算法运行状况
@@ -571,7 +571,7 @@ if __name__ == '__main__':
     t = []
 
     t.append(ProcessData())
-    t.append(ProcessData())
+
 
     for t1 in t:
         t1.start()
