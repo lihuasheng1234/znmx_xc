@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0450c0ee-99d6-4592-95d9-a01ffc62cad7" name="Default Changelist" comment="修改统一配置文件参数名">
+    <list default="true" id="0450c0ee-99d6-4592-95d9-a01ffc62cad7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Alarm_API/API.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/API.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/API.exp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/API.ilk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/API.lib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/API.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/Fwlib64.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/Fwlib64.lib" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/fwlib0DN64.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/fwlib0iD64.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/fwlib30i64.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/fwlibNCG64.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Alarm_API/fwlibe64.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/processFiles_0223.py" beforeDir="false" afterPath="$PROJECT_DIR$/processFiles_0223.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/singalr.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/singalr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/test/config.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/singalr.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/测试websocket数据传送.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/test_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/测试健康度缓存接口.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/调用动态链接库.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/测试机台报警.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test02.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/测试时间.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/测试时间.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,13 +52,14 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\57852\Desktop\test01\znmx_xc\test" />
+      <recent name="C:\Users\57852\Desktop\test01\znmx_xc\Alarm_API" />
+      <recent name="C:\Users\57852\Desktop\test01\znmx_xc" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\57852\Desktop\test01\znmx_xc\test" />
       <recent name="D:\MyWorkSpace\PythonProcess\znmx_project-master" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\57852\Desktop\test01\znmx_xc\test" />
-      <recent name="C:\Users\57852\Desktop\test01\znmx_xc" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -59,7 +74,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.processFiles_0223">
+  <component name="RunManager" selected="Python.测试机台报警">
     <configuration name="测试时间" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="znmx_project-master" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -73,7 +88,29 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/测试时间.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\57852\Desktop\test01\znmx_xc\test\测试时间.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="测试机台报警" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="znmx_project-master" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/测试机台报警.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -183,7 +220,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/singalr.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\57852\Desktop\test01\znmx_xc\test\测试websocket数据传送.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -194,11 +231,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.测试机台报警" />
         <item itemvalue="Python.processFiles_0223" />
         <item itemvalue="Python.singalr" />
         <item itemvalue="Python.测试时间" />
         <item itemvalue="Python.processFiles_0223" />
-        <item itemvalue="Python.singalr" />
       </list>
     </recent_temporary>
   </component>
@@ -220,7 +257,7 @@
       <workItem from="1615422709045" duration="17594000" />
       <workItem from="1615534488998" duration="892000" />
       <workItem from="1615768697629" duration="2069000" />
-      <workItem from="1616465170000" duration="595000" />
+      <workItem from="1616465170000" duration="1495000" />
     </task>
     <task id="LOCAL-00001" summary="0308下午修改">
       <created>1615193117133</created>
@@ -264,7 +301,14 @@
       <option name="project" value="LOCAL" />
       <updated>1616379177409</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="寻找dll文件">
+      <created>1616465919912</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1616465919912</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -315,10 +359,11 @@
     <MESSAGE value="修复cpu占用过高的问题" />
     <MESSAGE value="修改统一配置文件参数名" />
     <MESSAGE value="添加requirements.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加requirements.txt" />
+    <MESSAGE value="寻找dll文件" />
+    <option name="LAST_COMMIT_MESSAGE" value="寻找dll文件" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/znmx_xc$.coverage" NAME="创建文件 Coverage Results" MODIFIED="1615256221111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/znmx_xc$.coverage" NAME="测试机台报警 Coverage Results" MODIFIED="1616466559111" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/znmx_xc$singalr.coverage" NAME="singalr Coverage Results" MODIFIED="1616380861479" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/znmx_xc$processFiles_0223.coverage" NAME="processFiles_0223 Coverage Results" MODIFIED="1616383145053" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/znmx_project_master$test_api.coverage" NAME="test_api Coverage Results" MODIFIED="1614763268173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
